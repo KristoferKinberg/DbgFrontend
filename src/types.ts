@@ -1,3 +1,6 @@
 export interface ReduxState {
-    room: any;
+  room: {
+    roomId: string | null;
+    clientType: string | null;
+  };
 }

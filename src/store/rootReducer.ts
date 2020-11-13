@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-import Pagination from './room/room.reducer';
+import Room from './room/room.reducer';
 
 const rootReducer = combineReducers({
-    pagination: Pagination,
+    room: Room,
 });
 
 export default rootReducer;

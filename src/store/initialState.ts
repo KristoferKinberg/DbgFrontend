@@ -1,7 +1,10 @@
 import {ReduxState} from "../types";
 
 const initialState: ReduxState = {
-  room: {}
+  room: {
+    roomId: null,
+    clientType: null,
+  }
 };
 
 export default initialState;
