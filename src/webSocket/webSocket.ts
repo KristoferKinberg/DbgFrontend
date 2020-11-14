@@ -1,9 +1,10 @@
 import React from "react";
 import {useDispatch} from "react-redux";
 import {
-  actionSetPlayers, actionSetRoomId,
+  actionSetClientType,
+  actionSetPlayers,
+  actionSetUpGame,
   JOIN_GAME, JOINED_GAME,
-  thunkSetUpClient, thunkSetUpGame
 } from "../store/room/room.actions";
 import {
   CLIENT_CONNECTED,
@@ -42,15 +43,15 @@ const WebSocketHook = (): WebSocketObject => {
           : localStorage.setItem('clientId', data.clientId);
       }
 
-      if (data.type === ROOM_CREATION) dispatch(thunkSetUpClient(HOST));
+      if (data.type === ROOM_CREATION) dispatch(actionSetClientType(HOST));
 
-      if (data.type === JOINED_GAME) dispatch(thunkSetUpClient(PLAYER))
+      if (data.type === JOINED_GAME) dispatch(actionSetClientType(PLAYER))
 
       if (data.type === PLAYER_JOINED) dispatch(actionSetPlayers(data.players));
 
-      if (data.type === SUCCESSFULLY_JOINED) dispatch(thunkSetUpGame(data.roomId, data.players, PLAYER));
+      if (data.type === SUCCESSFULLY_JOINED) dispatch(actionSetUpGame(data.roomId, data.players, PLAYER));
 
-      if (data.type === SUCCESSFULLY_RECONNECTED) dispatch(thunkSetUpGame(data.roomId, data.players, data.clientType));
+      if (data.type === SUCCESSFULLY_RECONNECTED) dispatch(actionSetUpGame(data.roomId, data.players, data.clientType));
     }
 
     ws.onclose = () => {

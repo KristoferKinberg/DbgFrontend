@@ -6,15 +6,23 @@ import * as serviceWorker from './serviceWorker';
 import { Provider } from "react-redux";
 import {applyMiddleware, compose, createStore} from "redux";
 import rootReducer from './store/rootReducer';
-import thunk from 'redux-thunk';
+import createSagaMiddleware from "redux-saga";
+import {rootSaga} from "./store/rootSaga";
 
+
+const sagaMiddleware = createSagaMiddleware();
+
+const reduxDevTools =
 // @ts-ignore
-const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__();
 
 const store = createStore(
   rootReducer,
-  composeEnhancer(applyMiddleware(thunk)),
+  // compose(applyMiddleware(sagaMiddleware))
+  compose(applyMiddleware(sagaMiddleware), reduxDevTools)
 );
+
+sagaMiddleware.run(rootSaga);
 
 
 ReactDOM.render(
