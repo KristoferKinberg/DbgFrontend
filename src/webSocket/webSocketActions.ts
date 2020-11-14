@@ -4,3 +4,6 @@ export const CREATE_SERVER: string = 'CREATE_SERVER';
 export const ROOM_CREATION: string = 'ROOM_CREATION';
 export const CLIENT_CONNECTED: string = 'CLIENT_CONNECTED';
 export const PLAYER_CONNECTED: string = 'PLAYER_CONNECTED';
+export const SUCCESSFULLY_JOINED: string = 'SUCCESSFULLY_JOINED';
+export const RECONNECT: string = 'RECONNECT';
+export const SUCCESSFULLY_RECONNECTED: string = 'SUCCESSFULLY_RECONNECTED';

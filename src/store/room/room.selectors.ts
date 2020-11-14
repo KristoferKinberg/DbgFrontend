@@ -2,7 +2,8 @@ import {ReduxState} from "../../types";
 
 export const selectRoomId = (state: ReduxState) => state.room.roomId;
 export const selectClientType = (state: ReduxState) => state.room.clientType;
-export const selectRoomIdAbbrv = (state: ReduxState): string => localStorage.getItem('clientId')
+export const selectPlayers = (state: ReduxState) => state.room.players;
+export const selectRoomIdAbbrv = (): string => localStorage.getItem('clientId')
 // @ts-ignore
   ? localStorage
     .getItem('clientId')
