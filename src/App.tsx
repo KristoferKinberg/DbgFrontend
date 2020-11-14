@@ -1,37 +1,22 @@
 import React from 'react';
 import './App.css';
 import WebSocket, {WebSocketObject} from "./webSocket/webSocket";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-} from "react-router-dom";
-import Home from './scenes/home';
-import Lobby from './scenes/lobby';
-import JoinGame from "./scenes/joinGame/joinGame.scene";
+import Scenes from './scenes';
+import {useSelector} from "react-redux";
+
 
 const App = () => {
   const WebSocketObject: WebSocketObject = WebSocket();
+  const scene = useSelector((state: any) => state.router);
 
-  return (
-    <div className="App">
-      <Router>
-        <Switch>
-          <Route path={'/'} exact>
-            <Home WebSocket={WebSocketObject} />
-          </Route>
+  // @ts-ignore
+  const Component = Scenes[scene]
 
-          <Route path={'/lobby'} exact>
-            <Lobby WebSocket={WebSocketObject} />
-          </Route>
+  debugger;
 
-          <Route path={'/join'} exact>
-            <JoinGame WebSocket={WebSocketObject} />
-          </Route>
-        </Switch>
-      </Router>
-    </div>
-  );
+  return <div className="App">
+    <Component WebSocket={WebSocketObject} />
+  </div>;
 }
 
 export default App;

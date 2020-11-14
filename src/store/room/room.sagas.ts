@@ -9,8 +9,8 @@ export function* watchSetUpGame() {
 }
 
 function* makeSetUpGame({ roomId, players, clientType }: any) {
-  console.log('D::D:D:D:D')
   yield put(actionSetRoomId(roomId));
   yield put(actionSetPlayers(players));
   yield put(actionSetClientType(clientType));
+  console.log('D::D:D:D:D')
 }
