@@ -19,12 +19,31 @@ export interface WebSocketObject {
   webSocket: any;
   createServer(): void;
   joinGame(roomId: string): void;
+  addMessageHandlers(messageHandlers: any): void;
 }
 
 const WebSocketHook = (): WebSocketObject => {
   const webSocket: any = React.useRef(null);
   const ws = webSocket?.current;
   const dispatch = useDispatch();
+  const [messageHandlers, setMessageHandlers]: any = React.useState({
+    [CLIENT_CONNECTED]: (data: any) => {
+      localStorage.getItem('clientId')
+        ? sendMessage({ type: RECONNECT, newId: data.clientId })
+        : localStorage.setItem('clientId', data.clientId);
+    },
+    [ROOM_CREATION]: (data: any) => dispatch(actionSetClientType(HOST)),
+    [JOINED_GAME]: (data: any) => dispatch(actionSetClientType(PLAYER)),
+    [PLAYER_JOINED]: (data: any) => dispatch(actionSetPlayers(data.players)),
+    [SUCCESSFULLY_JOINED]: (data: any) => {
+      dispatch(actionSetUpGame(data.roomId, data.players, PLAYER));
+      dispatch(goToLobby())
+    },
+    [SUCCESSFULLY_RECONNECTED]: (data: any) => {
+      dispatch(actionSetUpGame(data.roomId, data.players, data.clientType));
+      dispatch(goToLobby());
+    }
+  });
 
   React.useEffect(() => {
     webSocket.current = new WebSocket('ws://localhost:8080');
@@ -38,27 +57,7 @@ const WebSocketHook = (): WebSocketObject => {
       console.log(evt, JSON.parse(evt.data));
       const data = JSON.parse(evt.data);
 
-      if (data.type === CLIENT_CONNECTED) {
-        localStorage.getItem('clientId')
-          ? sendMessage({ type: RECONNECT, newId: data.clientId })
-          : localStorage.setItem('clientId', data.clientId);
-      }
-
-      if (data.type === ROOM_CREATION) dispatch(actionSetClientType(HOST));
-
-      if (data.type === JOINED_GAME) dispatch(actionSetClientType(PLAYER))
-
-      if (data.type === PLAYER_JOINED) dispatch(actionSetPlayers(data.players));
-
-      if (data.type === SUCCESSFULLY_JOINED) {
-        dispatch(actionSetUpGame(data.roomId, data.players, PLAYER));
-        dispatch(goToLobby())
-      }
-
-      if (data.type === SUCCESSFULLY_RECONNECTED) {
-        dispatch(actionSetUpGame(data.roomId, data.players, data.clientType));
-        dispatch(goToLobby());
-      }
+      messageHandlers[data.type](data);
     }
 
     ws.onclose = () => {
@@ -87,10 +86,19 @@ const WebSocketHook = (): WebSocketObject => {
     webSocket.current.send(JSON.stringify({ ...msg, clientId: localStorage.getItem('clientId') }));
   };
 
+  /**
+   * Add new message handlers
+   * @param newMessageHandlers
+   */
+  const addMessageHandlers = (newMessageHandlers: any) => {
+    setMessageHandlers({ ...messageHandlers, ...newMessageHandlers });
+  };
+
   return {
     webSocket: ws,
     createServer,
     joinGame,
+    addMessageHandlers
   }
 };
 

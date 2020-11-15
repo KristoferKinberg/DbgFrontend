@@ -27,6 +27,13 @@ const Lobby = ({ WebSocket }: Props): JSX.Element => {
   }
 
   /**
+   * Leave game
+   */
+  const leaveGame = () => {
+    console.log('leave game');
+  }
+
+  /**
    * Render players
    */
   const renderPlayers = () => players.map((player: string) => <p key={player}>{ player }</p>);
@@ -42,6 +49,7 @@ const Lobby = ({ WebSocket }: Props): JSX.Element => {
     </div>
 
     <Button onClick={startGame} text={'Start Game'} disabled={clientType === PLAYER}/>
+    <Button onClick={leaveGame} text={'Leave Game'}/>
   </StyledLobby>
 };
 
