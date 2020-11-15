@@ -1,17 +1,16 @@
 import React from 'react';
 import Button from "../../components/button";
 import {WebSocketObject} from "../../webSocket/webSocket";
-import { useHistory } from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {actionSetClientType} from "../../store/room/room.actions";
 import {HOST} from "../../constants";
+import {goToJoin, goToLobby} from "../../store/router/router.actions";
 
 interface Props {
   WebSocket: WebSocketObject
 }
 
 const Home = ({ WebSocket: { createServer }}: Props):JSX.Element => {
-  const history = useHistory();
   const dispatch = useDispatch();
 
   /**
@@ -19,16 +18,14 @@ const Home = ({ WebSocket: { createServer }}: Props):JSX.Element => {
    */
   const _createServer = () => {
     dispatch(actionSetClientType(HOST));
-    history.push('/lobby')
+    dispatch(goToLobby());
     createServer();
   };
 
   /**
    * Join server
    */
-  const _joinServer = () => {
-    history.push('/join');
-  }
+  const _joinServer = () => dispatch(goToJoin());
 
   return <div>
     <Button text={'Create'} onClick={_createServer} />

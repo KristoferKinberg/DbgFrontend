@@ -13,6 +13,7 @@ import {
   ROOM_CREATION, SUCCESSFULLY_JOINED, SUCCESSFULLY_RECONNECTED
 } from "./webSocketActions";
 import {HOST, PLAYER} from "../constants";
+import {goToLobby} from "../store/router/router.actions";
 
 export interface WebSocketObject {
   webSocket: any;
@@ -49,9 +50,15 @@ const WebSocketHook = (): WebSocketObject => {
 
       if (data.type === PLAYER_JOINED) dispatch(actionSetPlayers(data.players));
 
-      if (data.type === SUCCESSFULLY_JOINED) dispatch(actionSetUpGame(data.roomId, data.players, PLAYER));
+      if (data.type === SUCCESSFULLY_JOINED) {
+        dispatch(actionSetUpGame(data.roomId, data.players, PLAYER));
+        dispatch(goToLobby())
+      }
 
-      if (data.type === SUCCESSFULLY_RECONNECTED) dispatch(actionSetUpGame(data.roomId, data.players, data.clientType));
+      if (data.type === SUCCESSFULLY_RECONNECTED) {
+        dispatch(actionSetUpGame(data.roomId, data.players, data.clientType));
+        dispatch(goToLobby());
+      }
     }
 
     ws.onclose = () => {

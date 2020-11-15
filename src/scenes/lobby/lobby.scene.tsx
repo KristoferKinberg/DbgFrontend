@@ -1,11 +1,10 @@
 import React from 'react';
 import {WebSocketObject} from "../../webSocket/webSocket";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {selectClientType, selectPlayers, selectRoomIdAbbrv} from "../../store/room/room.selectors";
 import Button from "../../components/button";
 import {StyledLobby} from "./lobby.styles";
 import {PLAYER} from "../../constants";
-import { useHistory } from "react-router-dom";
 
 interface Props {
   WebSocket: WebSocketObject;
@@ -15,9 +14,9 @@ const Lobby = ({ WebSocket }: Props): JSX.Element => {
   const clientType = useSelector(selectClientType);
   const players = useSelector(selectPlayers);
   const connectionKey = useSelector(selectRoomIdAbbrv);
-  const history = useHistory();
+  const dispatch = useDispatch();
 
-  if (!clientType) history.push('/');
+  if (!clientType) dispatch({ type: 'HOME' });
 
   /**
    * Start game

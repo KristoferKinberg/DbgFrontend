@@ -1,23 +1,12 @@
 import React from 'react';
 import {WebSocketObject} from "../../webSocket/webSocket";
 import Button from "../../components/button";
-import {useSelector} from "react-redux";
-import {selectClientType, selectRoomId} from "../../store/room/room.selectors";
-import {PLAYER} from "../../constants";
-import {useHistory} from "react-router-dom";
-
 interface Props {
   WebSocket: WebSocketObject
 }
 
 const JoinGame = ({ WebSocket: { joinGame }}: Props) => {
-  const clientType = useSelector(selectClientType);
-  const roomId = useSelector(selectRoomId);
-  const history = useHistory();
-
   const [val, setValue] = React.useState('cab4b5');
-
-  if (clientType === PLAYER && roomId) history.push('/lobby');
 
   /**
    * On change
