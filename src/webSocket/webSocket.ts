@@ -1,19 +1,8 @@
 import React from "react";
 import {useDispatch} from "react-redux";
-import {
-  actionSetClientType,
-  actionSetPlayers,
-  actionSetUpGame,
-  JOIN_GAME, JOINED_GAME,
-} from "../store/room/room.actions";
-import {
-  CLIENT_CONNECTED,
-  CREATE_SERVER, PLAYER_JOINED,
-  RECONNECT,
-  ROOM_CREATION, SUCCESSFULLY_JOINED, SUCCESSFULLY_RECONNECTED
-} from "./webSocketActions";
-import {HOST, PLAYER} from "../constants";
-import {goToLobby} from "../store/router/router.actions";
+import {JOIN_GAME } from "../store/room/room.actions";
+import {CREATE_SERVER} from "./webSocketActions";
+import generateMessageHandlers from "./messangeHandlers";
 
 export interface WebSocketObject {
   webSocket: any;
@@ -26,24 +15,17 @@ const WebSocketHook = (): WebSocketObject => {
   const webSocket: any = React.useRef(null);
   const ws = webSocket?.current;
   const dispatch = useDispatch();
-  const [messageHandlers, setMessageHandlers]: any = React.useState({
-    [CLIENT_CONNECTED]: (data: any) => {
-      localStorage.getItem('clientId')
-        ? sendMessage({ type: RECONNECT, newId: data.clientId })
-        : localStorage.setItem('clientId', data.clientId);
-    },
-    [ROOM_CREATION]: (data: any) => dispatch(actionSetClientType(HOST)),
-    [JOINED_GAME]: (data: any) => dispatch(actionSetClientType(PLAYER)),
-    [PLAYER_JOINED]: (data: any) => dispatch(actionSetPlayers(data.players)),
-    [SUCCESSFULLY_JOINED]: (data: any) => {
-      dispatch(actionSetUpGame(data.roomId, data.players, PLAYER));
-      dispatch(goToLobby())
-    },
-    [SUCCESSFULLY_RECONNECTED]: (data: any) => {
-      dispatch(actionSetUpGame(data.roomId, data.players, data.clientType));
-      dispatch(goToLobby());
-    }
-  });
+
+  /**
+   * Send message
+   * @param msg
+   */
+  const sendMessage = (msg: object) => {
+    console.log('Message: ', JSON.stringify({ ...msg, clientId: localStorage.getItem('clientId') }));
+    webSocket.current.send(JSON.stringify({ ...msg, clientId: localStorage.getItem('clientId') }));
+  };
+
+  const [messageHandlers, setMessageHandlers]: any = React.useState(generateMessageHandlers(dispatch, sendMessage));
 
   React.useEffect(() => {
     webSocket.current = new WebSocket('ws://localhost:8080');
@@ -64,7 +46,7 @@ const WebSocketHook = (): WebSocketObject => {
       console.log('disconnected')
       // automatically try to reconnect on connection loss
     }
-  }, []);
+  }, [messageHandlers]);
 
   /**
    * Create server
@@ -76,15 +58,6 @@ const WebSocketHook = (): WebSocketObject => {
    * @param roomId
    */
   const joinGame = (roomId: string) => sendMessage({ type: JOIN_GAME, roomId })
-
-  /**
-   * Send message
-   * @param msg
-   */
-  const sendMessage = (msg: object) => {
-    console.log('Message: ', JSON.stringify({ ...msg, clientId: localStorage.getItem('clientId') }));
-    webSocket.current.send(JSON.stringify({ ...msg, clientId: localStorage.getItem('clientId') }));
-  };
 
   /**
    * Add new message handlers

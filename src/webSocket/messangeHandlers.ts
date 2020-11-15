@@ -11,7 +11,7 @@ import {actionSetClientType, actionSetPlayers, actionSetUpGame, JOINED_GAME} fro
 import {HOST, PLAYER} from "../constants";
 import {goToLobby} from "../store/router/router.actions";
 
-const generateMessageHandlers = (data: any, dispatch: any, sendMessage: any) => {
+const generateMessageHandlers = (dispatch: any, sendMessage: any) => {
   /**
    * Client connected
    * @param data
