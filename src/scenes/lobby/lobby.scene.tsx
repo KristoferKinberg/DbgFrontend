@@ -5,6 +5,7 @@ import {selectClientType, selectPlayers, selectRoomIdAbbrv} from "../../store/ro
 import Button from "../../components/button";
 import {StyledLobby} from "./lobby.styles";
 import {PLAYER} from "../../constants";
+import {goToHome} from "../../store/router/router.actions";
 
 interface Props {
   WebSocket: WebSocketObject;
@@ -16,7 +17,7 @@ const Lobby = ({ WebSocket }: Props): JSX.Element => {
   const connectionKey = useSelector(selectRoomIdAbbrv);
   const dispatch = useDispatch();
 
-  if (!clientType) dispatch({ type: 'HOME' });
+  if (!clientType) dispatch(goToHome());
 
   /**
    * Start game
