@@ -28,7 +28,7 @@ export const actionSetClientType = (clientType: string) => ({
   clientType
 });
 
-export const actionSetUpGame = (roomId: string, players: string[], clientType: string) => ({
+export const actionSetUpGame = (roomId: string | null, players: string[], clientType: string | null) => ({
   type: SET_UP_GAME,
   roomId,
   players,

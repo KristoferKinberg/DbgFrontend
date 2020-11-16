@@ -1,15 +1,15 @@
 import {
   CLIENT_CONNECTED,
-  CREATE_SERVER,
-  PLAYER_JOINED,
+  PLAYER_JOINED, PLAYER_LEFT,
   RECONNECT,
   ROOM_CREATION,
   SUCCESSFULLY_JOINED,
-  SUCCESSFULLY_RECONNECTED
+  SUCCESSFULLY_LEFT_GAME,
+  SUCCESSFULLY_RECONNECTED,
 } from "./webSocketActions";
 import {actionSetClientType, actionSetPlayers, actionSetUpGame, JOINED_GAME} from "../store/room/room.actions";
 import {HOST, PLAYER} from "../constants";
-import {goToLobby} from "../store/router/router.actions";
+import {goToHome, goToLobby} from "../store/router/router.actions";
 
 const generateMessageHandlers = (dispatch: any, sendMessage: any) => {
   /**
@@ -26,7 +26,9 @@ const generateMessageHandlers = (dispatch: any, sendMessage: any) => {
    * On creation of a room
    * @param data
    */
-  const roomCreation = (data: any) => dispatch(actionSetClientType(HOST));
+  const roomCreation = (data: any) => {
+    dispatch(actionSetUpGame(data.roomId, data.players, HOST));
+  };
 
   /**
    * On joined game
@@ -47,7 +49,7 @@ const generateMessageHandlers = (dispatch: any, sendMessage: any) => {
   const successfullyJoined = (data: any) => {
     dispatch(actionSetUpGame(data.roomId, data.players, PLAYER));
     dispatch(goToLobby())
-  }
+  };
 
   /**
    * On successful reconnect
@@ -56,15 +58,30 @@ const generateMessageHandlers = (dispatch: any, sendMessage: any) => {
   const successfullyReconnected = (data: any) => {
     dispatch(actionSetUpGame(data.roomId, data.players, data.clientType));
     dispatch(goToLobby());
-  }
+  };
+
+  /**
+   * Leave game
+   */
+  const leaveGame = () => {
+    dispatch(actionSetUpGame(null, [], null));
+    dispatch(goToHome());
+  };
+
+  /**
+   * Player left
+   */
+  const playerLeft = (data: any) => dispatch(actionSetPlayers(data.players));
 
   return {
     [CLIENT_CONNECTED]: clientConnected,
     [ROOM_CREATION]: roomCreation,
     [JOINED_GAME]: joinedGame,
     [PLAYER_JOINED]: playerJoined,
+    [PLAYER_LEFT]: playerLeft,
     [SUCCESSFULLY_JOINED]: successfullyJoined,
     [SUCCESSFULLY_RECONNECTED]: successfullyReconnected,
+    [SUCCESSFULLY_LEFT_GAME]: leaveGame,
   }
 }
 

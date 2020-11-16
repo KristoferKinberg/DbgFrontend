@@ -1,4 +1,5 @@
 export const PLAYER_JOINED: string = 'PLAYER_JOINED';
+export const PLAYER_LEFT: string = 'PLAYER_LEFT';
 export const JOIN_SERVER: string = 'JOIN_SERVER';
 export const CREATE_SERVER: string = 'CREATE_SERVER';
 export const ROOM_CREATION: string = 'ROOM_CREATION';
@@ -7,3 +8,5 @@ export const PLAYER_CONNECTED: string = 'PLAYER_CONNECTED';
 export const SUCCESSFULLY_JOINED: string = 'SUCCESSFULLY_JOINED';
 export const RECONNECT: string = 'RECONNECT';
 export const SUCCESSFULLY_RECONNECTED: string = 'SUCCESSFULLY_RECONNECTED';
+export const LEAVE_GAME: string = 'LEAVE_GAME';
+export const SUCCESSFULLY_LEFT_GAME: string = 'SUCCESSFULLY_LEFT_GAME';

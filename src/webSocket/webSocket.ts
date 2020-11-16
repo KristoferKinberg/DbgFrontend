@@ -1,13 +1,14 @@
 import React from "react";
 import {useDispatch} from "react-redux";
 import {JOIN_GAME } from "../store/room/room.actions";
-import {CREATE_SERVER} from "./webSocketActions";
+import {CREATE_SERVER, LEAVE_GAME} from "./webSocketActions";
 import generateMessageHandlers from "./messangeHandlers";
 
 export interface WebSocketObject {
   webSocket: any;
   createServer(): void;
   joinGame(roomId: string): void;
+  leaveGame(roomId: string): void;
   addMessageHandlers(messageHandlers: any): void;
 }
 
@@ -43,7 +44,7 @@ const WebSocketHook = (): WebSocketObject => {
     }
 
     ws.onclose = () => {
-      console.log('disconnected')
+      console.log('disconnected');
       // automatically try to reconnect on connection loss
     }
   }, [messageHandlers]);
@@ -60,17 +61,24 @@ const WebSocketHook = (): WebSocketObject => {
   const joinGame = (roomId: string) => sendMessage({ type: JOIN_GAME, roomId })
 
   /**
+   * Leave game
+   * @param roomId
+   */
+  const leaveGame = (roomId: string) => sendMessage({ type: LEAVE_GAME, roomId });
+
+  /**
    * Add new message handlers
    * @param newMessageHandlers
    */
   const addMessageHandlers = (newMessageHandlers: any) => {
-    setMessageHandlers({ ...messageHandlers, ...newMessageHandlers });
+    setMessageHandlers({ ...newMessageHandlers, ...messageHandlers });
   };
 
   return {
     webSocket: ws,
     createServer,
     joinGame,
+    leaveGame,
     addMessageHandlers
   }
 };
