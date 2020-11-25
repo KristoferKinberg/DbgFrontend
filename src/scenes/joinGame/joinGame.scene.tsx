@@ -1,6 +1,7 @@
 import React from 'react';
-import {WebSocketObject} from "../../webSocket/webSocket";
 import Button from "../../components/button";
+import {WebSocketObject} from "../../webSocket/Websocket.types";
+
 interface Props {
   WebSocket: WebSocketObject
 }

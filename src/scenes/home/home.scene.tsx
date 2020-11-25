@@ -1,10 +1,10 @@
 import React from 'react';
 import Button from "../../components/button";
-import {WebSocketObject} from "../../webSocket/webSocket";
 import {useDispatch} from "react-redux";
 import {actionSetClientType} from "../../store/room/room.actions";
 import {HOST} from "../../constants";
 import {goToJoin, goToLobby} from "../../store/router/router.actions";
+import {WebSocketObject} from "../../webSocket/Websocket.types";
 
 interface Props {
   WebSocket: WebSocketObject

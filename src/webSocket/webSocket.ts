@@ -1,16 +1,9 @@
 import React from "react";
 import {useDispatch} from "react-redux";
 import {JOIN_GAME } from "../store/room/room.actions";
-import {CREATE_SERVER, LEAVE_GAME} from "./webSocketActions";
+import {CREATE_SERVER, LEAVE_GAME, START_GAME} from "./webSocketActions";
 import generateMessageHandlers from "./messangeHandlers";
-
-export interface WebSocketObject {
-  webSocket: any;
-  createServer(): void;
-  joinGame(roomId: string): void;
-  leaveGame(roomId: string): void;
-  addMessageHandlers(messageHandlers: any): void;
-}
+import {WebSocketObject} from "./Websocket.types";
 
 const WebSocketHook = (): WebSocketObject => {
   const webSocket: any = React.useRef(null);
@@ -67,6 +60,12 @@ const WebSocketHook = (): WebSocketObject => {
   const leaveGame = (roomId: string) => sendMessage({ type: LEAVE_GAME, roomId });
 
   /**
+   * Start game
+   * @param roomId
+   */
+  const startGame = (roomId: string) => sendMessage({ type: START_GAME, roomId });
+
+  /**
    * Add new message handlers
    * @param newMessageHandlers
    */
@@ -79,6 +78,7 @@ const WebSocketHook = (): WebSocketObject => {
     createServer,
     joinGame,
     leaveGame,
+    startGame,
     addMessageHandlers
   }
 };

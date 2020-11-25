@@ -1,17 +1,17 @@
 import React from 'react';
-import {WebSocketObject} from "../../webSocket/webSocket";
 import {useDispatch, useSelector} from "react-redux";
 import {selectClientType, selectPlayers, selectRoomId, selectRoomIdAbbrv} from "../../store/room/room.selectors";
 import Button from "../../components/button";
 import {StyledLobby} from "./lobby.styles";
 import {PLAYER} from "../../constants";
 import {goToHome} from "../../store/router/router.actions";
+import {WebSocketObject} from "../../webSocket/Websocket.types";
 
 interface Props {
   WebSocket: WebSocketObject;
 }
 
-const Lobby = ({ WebSocket: { leaveGame }}: Props): JSX.Element => {
+const Lobby = ({ WebSocket: { leaveGame, startGame }}: Props): JSX.Element => {
   const clientType = useSelector(selectClientType);
   const players = useSelector(selectPlayers);
   const connectionKey = useSelector(selectRoomIdAbbrv);
@@ -23,8 +23,11 @@ const Lobby = ({ WebSocket: { leaveGame }}: Props): JSX.Element => {
   /**
    * Start game
    */
-  const startGame = () => {
+  const _startGame = () => {
     console.log('start game');
+    if (roomId){
+      startGame(roomId);
+    }
   };
 
   /**
@@ -53,7 +56,7 @@ const Lobby = ({ WebSocket: { leaveGame }}: Props): JSX.Element => {
       { renderPlayers() }
     </div>
 
-    <Button onClick={startGame} text={'Start Game'} disabled={clientType === PLAYER}/>
+    <Button onClick={_startGame} text={'Start Game'} disabled={clientType === PLAYER}/>
     <Button onClick={_leaveGame} text={'Leave Game'}/>
   </StyledLobby>
 };

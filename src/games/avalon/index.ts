@@ -1,2 +1,2 @@
-const abc = () => {};
-export default abc;
+import Avalon from "./avalon.game";
+export default Avalon;

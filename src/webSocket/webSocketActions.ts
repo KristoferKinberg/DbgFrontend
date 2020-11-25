@@ -10,3 +10,5 @@ export const RECONNECT: string = 'RECONNECT';
 export const SUCCESSFULLY_RECONNECTED: string = 'SUCCESSFULLY_RECONNECTED';
 export const LEAVE_GAME: string = 'LEAVE_GAME';
 export const SUCCESSFULLY_LEFT_GAME: string = 'SUCCESSFULLY_LEFT_GAME';
+export const START_GAME: string = 'START_GAME';
+export const STARTED_GAME: string = 'STARTED_GAME';
