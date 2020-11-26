@@ -5,6 +5,7 @@ const initialState: ReduxState = {
     roomId: null,
     clientType: null,
     players: [],
+    game: null,
   }
 };
 

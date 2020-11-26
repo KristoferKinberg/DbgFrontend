@@ -1,5 +1,5 @@
 import initialState from '../initialState';
-import {SET_CLIENT_TYPE, SET_PLAYERS, SET_ROOM_ID} from "./room.actions";
+import {SET_CLIENT_TYPE, SET_GAME, SET_PLAYERS, SET_ROOM_ID} from "./room.actions";
 
 const roomReducer = (state: any = initialState.room, action: any) => {
     switch(action.type) {
@@ -11,6 +11,9 @@ const roomReducer = (state: any = initialState.room, action: any) => {
 
         case SET_PLAYERS:
             return { ...state, players: action.players };
+
+        case SET_GAME:
+            return { ...state, game: action.game };
 
         default:
             return state;

@@ -12,7 +12,7 @@ const Avalon = ({ players, host, registerMessageHandlers }: Props) => {
 
   console.log(characters);
 
-  return <div>:D</div>
+  return <div>AVALON GAME</div>
 };
 
 export default Avalon;

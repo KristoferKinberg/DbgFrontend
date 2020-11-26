@@ -1,4 +1,4 @@
-import {PLAYER} from "../../constants";
+import {games} from "../../games/games.types";
 
 export const SET_CLIENT_ID = 'SET_CLIENT_ID';
 export const SET_ROOM_ID = 'SET_ROOM_ID';
@@ -7,6 +7,7 @@ export const SET_CLIENT_TYPE = 'SET_CLIENT_TYPE';
 export const JOINED_GAME = 'JOINED_GAME';
 export const JOIN_GAME = 'JOIN_GAME';
 export const SET_UP_GAME = 'SET_UP_GAME';
+export const SET_GAME = 'SET_GAME';
 
 export const actionSetClientId = (clientId: string) => ({
   type: SET_CLIENT_ID,
@@ -33,6 +34,11 @@ export const actionSetUpGame = (roomId: string | null, players: string[], client
   roomId,
   players,
   clientType,
+});
+
+export const actionSetGame = (game: games) => ({
+  type: SET_GAME,
+  game,
 })
 
 export const clientSuccessfullyConnected = (clientId: string) => {

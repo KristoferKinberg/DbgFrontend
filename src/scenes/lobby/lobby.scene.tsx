@@ -6,6 +6,7 @@ import {StyledLobby} from "./lobby.styles";
 import {PLAYER} from "../../constants";
 import {goToHome} from "../../store/router/router.actions";
 import {WebSocketObject} from "../../webSocket/Websocket.types";
+import {games} from "../../games/games.types";
 
 interface Props {
   WebSocket: WebSocketObject;
@@ -26,7 +27,7 @@ const Lobby = ({ WebSocket: { leaveGame, startGame }}: Props): JSX.Element => {
   const _startGame = () => {
     console.log('start game');
     if (roomId){
-      startGame(roomId);
+      startGame(roomId, games.AVALON);
     }
   };
 
