@@ -1,5 +1,4 @@
 import React from 'react';
-import TeamsGenerator from "./teamsGenerator";
 
 export interface Props {
   players: any[];
@@ -8,10 +7,6 @@ export interface Props {
 }
 
 const Avalon = ({ players, host, registerMessageHandlers }: Props) => {
-  const characters = TeamsGenerator(players);
-
-  console.log(characters);
-
   return <div>AVALON GAME</div>
 };
 

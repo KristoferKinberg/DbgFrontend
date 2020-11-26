@@ -1,6 +1,6 @@
 import React from 'react';
 import {WebSocketObject} from "../../webSocket/Websocket.types";
-import GamesComponents from '../game';
+import GamesComponents from '../../games';
 import {useSelector} from "react-redux";
 import {selectGame} from "../../store/room/room.selectors";
 
@@ -16,8 +16,8 @@ const Game = ({ WebSocket }: Props): JSX.Element => {
   const GameComponent = GamesComponents[game];
 
   return <div>
-    <div>:D GAME :D</div>
-    <GameComponent />
+    <div>GAME:</div>
+    <GameComponent players={[]} host={[]} registerMessageHandlers={() => {}} />
   </div>;
 };
 
