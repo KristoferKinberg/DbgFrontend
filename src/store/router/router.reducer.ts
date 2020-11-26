@@ -19,5 +19,4 @@ export const routesMap = {
 }
 
 export default (state = 'HOME', action: any = {}) =>
-// @ts-ignore
   components[action.type] || state;
